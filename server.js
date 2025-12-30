@@ -3,7 +3,7 @@ const express = require("express");
 const { MongoClient } = require("mongodb");
 const twilio = require("twilio");
 const cors = require("cors");
-
+const PORT = process.env.PORT || 7000;
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -41,10 +41,10 @@ app.post("/feedback", async (req, res) => {
     // 🔸 Basic validation
     if (
       !data.clientName ||
-      !data.quality ||
-      !data.value ||
-      !data.requirement ||
-      !data.timeliness
+      !data.quality <1 ||
+      !data.value <1 ||
+      !data.requirement <1||
+      !data.timeliness <1
     ) {
       return res.status(400).json({ success: false, message: "Invalid data" });
     }
@@ -81,8 +81,11 @@ ${data.suggestions || "No comments"}
     res.status(500).json({ success: false });
   }
 });
+app.get("/", (req, res) => {
+  res.send("TechNovaX Backend Running ✅");
+});
 
 // 🔹 Start Server
-app.listen(7000, () => {
-  console.log("🚀 Server running on http://localhost:7000");
+app.listen(PORT, () => {
+  console.log("🚀 Server running on", PORT);
 });
